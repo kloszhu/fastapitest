@@ -24,3 +24,12 @@ app.add_middleware(
 )
 ## 创建随机hash
 openssl rand -hex 32
+
+
+## jwt无法提交的问题
+### 源码中出现了问题，OAuth2PasswordRequestForm=Depend()有问题，
+修改为下面的逻辑，为何要这么做，因为fastapi 处理请求和返回请求都是
+使用pydantic模块，修改为基于此模块方式，使用正常：
+from pydantic import BaseModel, ValidationError
+
+class OAuth2PasswordRequestForm(BaseModel):

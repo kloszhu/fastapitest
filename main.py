@@ -10,12 +10,15 @@ from fastapi import Cookie, FastAPI,APIRouter
 from dao.usercontroller import router as userrouter
 from fastapi.middleware.cors import CORSMiddleware
 
+from authoize.authcontroller import app as authorrouter
 
 
-app = FastAPI()
-
+app = FastAPI(title="我的工作台",
+              description="这是一个信息发布工具",
+              version='1.0.0')
 # 路由
 app.include_router(userrouter)
+app.include_router(authorrouter)
 # CORS
 origins = [
     "http://localhost:8000",
@@ -32,5 +35,5 @@ app.add_middleware(
 )
 
 @app.get("/items/")
-async def read_items(ads_id: Optional[str] = Cookie(None)):
+async def read_items(ads_id:Optional[str] = Cookie(None)):
     return {"ads_id": ads_id}
